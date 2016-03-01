@@ -1,0 +1,5 @@
+!noci
+data/System/RecordChangesPlugin.txt 0644 Documentation page
+lib/Foswiki/Plugins/RecordChangesPlugin.pm 0444 Perl module
+lib/Foswiki/Plugins/RecordChangesPlugin/Config.spec 0444 Configuration
+tools/changescatchup

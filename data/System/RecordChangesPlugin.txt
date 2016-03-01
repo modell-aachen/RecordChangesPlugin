@@ -1,0 +1,56 @@
+%META:TOPICPARENT{name="Plugins"}%
+<!--
+One line description, required for extensions repository catalog.
+   * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
+-->
+---+!! Record who made content changes.
+
+%SHORTDESCRIPTION%
+
+%TOC%
+
+---++ Usage
+
+This plugin records who made changes to text or metadata.
+
+You can query who made the last text change like this:
+<pre>
+   * Text changed by: %<nop>QUERY{"META:CHANGES.text_author"}%
+   * Text changed on epoch: %<nop>QUERY{"META:CHANGES.text_dt"}%
+</pre>
+
+You can also query who made the last change to a formfield, eg. if you want to know who set =Responsible=:
+<pre>
+   * Responsible changed by: %<nop>QUERY{"META:CHANGES.Responsible_author"}%
+   * Responsible changed on epoch: %<nop>QUERY{"META:CHANGES.Responsible_dt"}%
+</pre>
+
+---++ changescatchup
+
+If you install this plugin and want to record changes made in the past, you can use =tools/changescatchup= to check in past changes.
+
+Note that this will create a new revision (if changes occured).
+
+Use =tools/changescatchup --help= for usage.
+
+---++ Preferences
+
+You can set a prefix for the fields in configure. It will be expanded when creating the record. Eg. =KVPPlugin= integration:
+<pre>{Extensions}{RecordChangesPlugin}{prefix} = '%<nop>WORKFLOWMETA%';</pre>
+If you edit a topic in status =APPROVED=, you will get =META:CHANGES{... APPROVED_text_author="..."}= etc.
+
+---++ Installation
+%$INSTALL_INSTRUCTIONS%
+
+---++ Info
+
+|  Author: | Modell Aachen GmbH |
+|  Copyright: | 2016, Modell Aachen GmbH, All Rights Reserved |
+|  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
+|  Dependencies: | |
+|  Version: | %$VERSION% |
+|  Release: | %$RELEASE% |
+|  Change&nbsp;History: | <!-- versions below in reverse order -->&nbsp; |
+|  1.0.0 (%$CREATEDATE%): | Initial version |
+|  Home: | http://modell-aachen.de |
+|  Support: | http://modell-aachen.de |

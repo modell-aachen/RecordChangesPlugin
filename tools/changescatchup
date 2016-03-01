@@ -1,0 +1,74 @@
+#!/usr/bin/perl
+# Copyright 2015 Modell Aachen GmbH
+# License: GPLv2+
+
+use strict;
+use warnings;
+
+# Set library paths in @INC, at compile time
+BEGIN {
+  if (-e './setlib.cfg') {
+    unshift @INC, '.';
+  } elsif (-e '../bin/setlib.cfg') {
+    unshift @INC, '../bin';
+  }
+  require 'setlib.cfg';
+}
+
+use Foswiki ();
+my $session = Foswiki->new('admin');
+
+use Foswiki::Store::PlainFile;
+
+my ($includeweb, $excludeweb, $includetopic, $excludetopic, $help);
+for (my $i = 0; $i <= $#ARGV; $i++) {
+    my $param = $ARGV[$i];
+    if ($param =~ m#^-?-?help#) {
+        $help = 1;
+    } elsif ($param =~ m#^-?-?includeweb=(.*)#) {
+        $includeweb = $1;
+    } elsif ($param =~ m#^-?-?excludeweb=(.*)#) {
+        $excludeweb = $1;
+    } elsif ($param =~ m#^-?-?includetopic=(.*)#) {
+        $includetopic = $1;
+    } elsif ($param =~ m#^-?-?excludetopic=(.*)#) {
+        $excludetopic = $1;
+    } elsif ($i < $#ARGV) {
+        if ($param =~ m#^-?-?includeweb$#) {
+            $includeweb = $ARGV[++$i];
+        } elsif ($param =~ m#^-?-?excludeweb$#) {
+            $excludeweb = $ARGV[++$i];
+        } elsif ($param =~ m#^-?-?includetopic$#) {
+            $includetopic = $ARGV[++$i];
+        } elsif ($param =~ m#^-?-?excludetopic$#) {
+            $excludetopic = $ARGV[++$i];
+        }
+    }
+}
+
+if ($help) {
+    print <<'MESSAGE';
+TODO: desciption
+
+Usage:
+./changes_catchup [includeweb=...] [excludeweb=...] [includetopic=...] [excludetopic=...]
+
+or
+./changes_catchup [--includeweb=...] [--excludeweb=...] [--includetopic=...] [--excludetopic=...]
+
+or
+./changes_catchup [--includeweb ...] [--excludeweb ...] [--includetopic ...] [--excludetopic ...]
+
+Parameters:
+    includeweb: (optional) regex for including webs; defaults to .*
+    excludeweb: (optional) regex for excluding webs; defaults to ^(System|Trash)\\b
+    includetopic: (optional) regex for including topics; defaults to .*
+    excludetopic: (optional) regex for excluding topics; defaults to ^Web
+
+Run from tools directory.
+MESSAGE
+
+    exit 0;
+}
+
+Foswiki::Plugins::RecordChangesPlugin::historyCatchup($includeweb, $excludeweb, $includetopic, $excludetopic);
