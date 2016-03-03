@@ -38,10 +38,10 @@ sub beforeSaveHandler {
         ($oldMeta, undef) = Foswiki::Func::readTopic($web, $topic);
     } else {
         # empty meta, so everything will be recorded as changed
-        $oldMeta = new Foswiki::Func::Meta($meta);
+        $oldMeta = new Foswiki::Meta($meta);
     }
 
-    my $changes = checkChanges($meta, $oldMeta);
+    my $changes = checkChanges($oldMeta, $meta);
     _putChanges($changes, $meta);
 }
 
