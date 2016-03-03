@@ -20,7 +20,7 @@ sub initPlugin {
     my ( $topic, $web, $user, $installWeb ) = @_;
 
     # check for Plugins.pm versions
-    if ( $Foswiki::Plugins::VERSION < 2.3 ) {
+    if ( $Foswiki::Plugins::VERSION < 2.0 ) {
         Foswiki::Func::writeWarning( 'Version mismatch between ',
             __PACKAGE__, ' and Plugins.pm' );
         return 0;
