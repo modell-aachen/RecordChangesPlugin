@@ -39,6 +39,7 @@ sub beforeSaveHandler {
     } else {
         # empty meta, so everything will be recorded as changed
         $oldMeta = new Foswiki::Meta($meta);
+        $oldMeta->text('');
     }
 
     my $changes = checkChanges($oldMeta, $meta);
@@ -95,6 +96,7 @@ sub historyCatchup {
             my ($meta, undef) = Foswiki::Func::readTopic($web, $topic);
 
             my $oldMeta = new Foswiki::Meta($meta);
+            $oldMeta->text('');
             my ( undef, undef, $maxrev ) = $meta->getRevisionInfo();
             for ( my $rev = 1; $rev <= $maxrev; $rev++) {
                 my ($newMeta, undef) = Foswiki::Func::readTopic($web, $topic, $rev);
