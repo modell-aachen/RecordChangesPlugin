@@ -33,16 +33,18 @@ sub initPlugin {
 sub beforeSaveHandler {
     my ($text, $topic, $web, $meta) = @_;
 
-    my $oldMeta;
+    my ($oldMeta, $author, $date);
     if(Foswiki::Func::topicExists($web, $topic)) {
         ($oldMeta, undef) = Foswiki::Func::readTopic($web, $topic);
     } else {
         # empty meta, so everything will be recorded as changed
         $oldMeta = new Foswiki::Meta($meta);
         $oldMeta->text('');
+        $author = Foswiki::Func::getCanonicalUserID();
+        $date = time();
     }
 
-    my $changes = checkChanges($oldMeta, $meta);
+    my $changes = checkChanges($oldMeta, $meta, $author, $date);
     _putChanges($changes, $meta);
 }
 
@@ -114,7 +116,7 @@ sub historyCatchup {
 }
 
 sub checkChanges {
-    my ($newMeta, $oldMeta) = @_;
+    my ($oldMeta, $newMeta, $author, $date) = @_;
 
     my $changes = {};
 
@@ -148,7 +150,7 @@ sub checkChanges {
     }
 
     if(scalar keys %$changes) {
-        my ($date, $author) = $newMeta->getRevisionInfo();
+        ($date, $author) = $newMeta->getRevisionInfo() unless $author && $date;
         my $prefix = $Foswiki::cfg{Extensions}{RecordChangesPlugin}{prefix};
         $prefix = Foswiki::Func::expandCommonVariables($prefix, $newMeta->topic(), $newMeta->web(), $newMeta) if defined $prefix;
         $prefix = undef unless defined $prefix && $prefix ne '';
