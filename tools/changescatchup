@@ -18,8 +18,6 @@ BEGIN {
 use Foswiki ();
 my $session = Foswiki->new('admin');
 
-use Foswiki::Store::PlainFile;
-
 my ($includeweb, $excludeweb, $includetopic, $excludetopic, $help);
 for (my $i = 0; $i <= $#ARGV; $i++) {
     my $param = $ARGV[$i];
